@@ -1,2 +1,39 @@
 run_name: demo
 seed: 42
+
+data:
+  dataset: wikitext
+  subset: wikitext-103-raw-v1
+  split: validation
+  text_column: text
+  num_docs_train: 1000
+  num_docs_eval: 200
+  max_length: 256
+
+models:
+  A:
+    name: EleutherAI/pythia-410m-deduped-v0
+  B:
+    name: gpt2-medium
+
+layers:
+  hook_point: resid_pre     # resid_pre | mlp_out | attn_out
+
+train:
+  batch_size_pairs: 8192     # pairs of token activations (A→B)
+  steps: 4000
+  lr: 1e-3
+  weight_decay: 0.0
+  eval_every: 200
+
+lowrank:
+  rank: 128                  # can override via CLI
+  residual: true
+  l1: 0.0                    # L1 on U and V
+  prox_every: 50             # steps between soft-thresholding; 0 disables
+
+mlp:
+  hidden: 512
+
+stitching_eval:
+  max_batches: 50            # eval docs batches for stitched loss
