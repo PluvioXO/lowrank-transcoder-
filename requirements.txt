@@ -1,0 +1,11 @@
+transformer-lens
+transformers
+datasets
+torch
+tqdm
+numpy
+pandas
+scikit-learn
+scipy
+einops
+pyyaml
